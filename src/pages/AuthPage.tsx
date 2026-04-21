@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AuthPage = () => {
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -15,6 +16,7 @@ const AuthPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLanguage();
 
   const redirectTo = (location.state as any)?.from || "/";
 
@@ -34,8 +36,8 @@ const AuthPage = () => {
         });
         if (error) throw error;
         toast({
-          title: "Compte créé avec succès",
-          description: "Vérifiez votre email pour confirmer votre inscription.",
+          title: t("auth.signup.success"),
+          description: t("auth.signup.check_email"),
         });
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -43,13 +45,13 @@ const AuthPage = () => {
           password,
         });
         if (error) throw error;
-        toast({ title: "Connexion réussie", description: "Bienvenue !" });
+        toast({ title: t("auth.signin.success"), description: t("auth.welcome") });
         navigate(redirectTo, { replace: true });
       }
     } catch (error: any) {
       toast({
-        title: "Erreur",
-        description: error.message || "Une erreur est survenue.",
+        title: t("auth.error"),
+        description: error.message || t("auth.error.generic"),
         variant: "destructive",
       });
     } finally {
@@ -65,12 +67,10 @@ const AuthPage = () => {
             <User className="w-7 h-7 text-primary" />
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-3">
-            {mode === "login" ? "Connexion" : "Créer un compte"}
+            {mode === "login" ? t("auth.signin") : t("auth.signup")}
           </h1>
           <p className="text-muted-foreground">
-            {mode === "login"
-              ? "Connectez-vous pour accéder à votre analyse personnalisée."
-              : "Créez votre compte pour recevoir votre analyse détaillée."}
+            {mode === "login" ? t("auth.signin.subtitle") : t("auth.signup.subtitle")}
           </p>
         </div>
 
@@ -79,16 +79,16 @@ const AuthPage = () => {
             {mode === "signup" && (
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Nom complet
+                  {t("auth.fullname")}
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <User className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Votre nom"
-                    className="premium-input pl-10"
+                    placeholder={t("auth.fullname.placeholder")}
+                    className="premium-input ps-10"
                     required
                   />
                 </div>
@@ -97,16 +97,16 @@ const AuthPage = () => {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Adresse email
+                {t("auth.email")}
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Mail className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="vous@exemple.com"
-                  className="premium-input pl-10"
+                  className="premium-input ps-10"
                   required
                 />
               </div>
@@ -114,23 +114,23 @@ const AuthPage = () => {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Mot de passe
+                {t("auth.password")}
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Lock className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="premium-input pl-10 pr-10"
+                  className="premium-input ps-10 pe-10"
                   required
                   minLength={6}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -145,29 +145,29 @@ const AuthPage = () => {
               disabled={loading}
             >
               {loading
-                ? "Chargement..."
+                ? t("auth.loading")
                 : mode === "login"
-                ? "Se connecter"
-                : "Créer mon compte"}
-              <ArrowRight className="w-4 h-4" />
+                ? t("auth.signin.btn")
+                : t("auth.signup.btn")}
+              <ArrowRight className="w-4 h-4 rtl:rotate-180" />
             </Button>
           </form>
 
           <div className="mt-6 pt-6 border-t border-border/60 text-center">
             <p className="text-sm text-muted-foreground">
-              {mode === "login" ? "Pas encore de compte ?" : "Déjà un compte ?"}
+              {mode === "login" ? t("auth.no_account") : t("auth.has_account")}
               <button
                 onClick={() => setMode(mode === "login" ? "signup" : "login")}
-                className="text-primary font-medium ml-1 hover:underline"
+                className="text-primary font-medium ms-1 hover:underline"
               >
-                {mode === "login" ? "S'inscrire" : "Se connecter"}
+                {mode === "login" ? t("auth.switch.signup") : t("auth.switch.signin")}
               </button>
             </p>
           </div>
         </div>
 
         <p className="text-xs text-muted-foreground text-center mt-6">
-          En continuant, vous acceptez nos conditions d'utilisation et notre politique de confidentialité.
+          {t("auth.terms")}
         </p>
       </div>
     </AppLayout>

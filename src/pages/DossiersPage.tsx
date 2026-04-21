@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/UIStates";
 import { FolderOpen, Trash2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const mockDossiers = [
   {
@@ -35,14 +36,15 @@ const mockDossiers = [
 
 const DossiersPage = () => {
   const hasDossiers = mockDossiers.length > 0;
+  const { t } = useLanguage();
 
   return (
     <AppLayout>
       <div className="section-container py-10 md:py-16">
         <div className="max-w-4xl mx-auto">
           <div className="mb-10 animate-fade-in">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Mes dossiers</h1>
-            <p className="text-muted-foreground text-lg">Retrouvez et suivez l'ensemble de vos analyses et guides sauvegardés.</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{t("dossiers.title")}</h1>
+            <p className="text-muted-foreground text-lg">{t("dossiers.subtitle")}</p>
           </div>
 
           {hasDossiers ? (
@@ -69,7 +71,7 @@ const DossiersPage = () => {
                     <div className="flex sm:flex-col gap-2 flex-shrink-0">
                       <Link to={dossier.type === "Aliyah" ? "/aliyah/resultats" : "/resident/resultats"}>
                         <Button variant="default" size="sm" className="w-full">
-                          Reprendre <ArrowRight className="w-3 h-3" />
+                          {t("dossiers.resume")} <ArrowRight className="w-3 h-3 rtl:rotate-180" />
                         </Button>
                       </Link>
                       <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10">
@@ -82,8 +84,8 @@ const DossiersPage = () => {
             </div>
           ) : (
             <EmptyState
-              title="Aucun dossier sauvegardé"
-              description="Lancez une analyse ou créez un guide Aliyah pour le retrouver ici."
+              title={t("dossiers.empty.title")}
+              description={t("dossiers.empty.desc")}
               icon={<FolderOpen className="w-12 h-12" />}
             />
           )}
@@ -92,7 +94,7 @@ const DossiersPage = () => {
             <div className="mt-10 text-center">
               <Link to="/commencer">
                 <Button variant="outline" size="lg">
-                  Nouvelle analyse <ArrowRight className="w-4 h-4" />
+                  {t("dossiers.new")} <ArrowRight className="w-4 h-4 rtl:rotate-180" />
                 </Button>
               </Link>
             </div>

@@ -4,6 +4,7 @@ import Chip from "@/components/Chip";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, FileText, Download, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const categories = ["Toutes", "Aides sociales", "Logement", "Emploi", "Famille", "Santé"];
 
@@ -60,6 +61,7 @@ const mockBenefits = [
 const ResidentResults = () => {
   const [activeCategory, setActiveCategory] = useState("Toutes");
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
+  const { t } = useLanguage();
 
   const filtered = activeCategory === "Toutes"
     ? mockBenefits
@@ -76,9 +78,9 @@ const ResidentResults = () => {
       <div className="section-container py-10 md:py-16">
         {/* Header */}
         <div className="max-w-3xl mb-10 animate-fade-in">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Vos droits et avantages</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{t("results.resident.title")}</h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Voici une analyse personnalisée des droits et aides auxquels vous pouvez prétendre en tant que résident en Israël.
+            {t("results.resident.subtitle")}
           </p>
         </div>
 
@@ -170,11 +172,11 @@ const ResidentResults = () => {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4 mt-10">
           <Button variant="default" size="lg">
-            <Download className="w-4 h-4" /> Télécharger le rapport
+            <Download className="w-4 h-4" /> {t("results.download.report")}
           </Button>
           <Link to="/dossiers">
             <Button variant="outline" size="lg">
-              Sauvegarder dans mes dossiers <ArrowRight className="w-4 h-4" />
+              {t("results.save")} <ArrowRight className="w-4 h-4 rtl:rotate-180" />
             </Button>
           </Link>
         </div>
