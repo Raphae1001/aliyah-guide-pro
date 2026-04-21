@@ -5,6 +5,7 @@ import Chip from "@/components/Chip";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Circle, Clock, AlertTriangle, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Task {
   id: string;
@@ -32,6 +33,7 @@ const mockTasks: Task[] = [
 
 const PreparationDashboard = () => {
   const [activePhase, setActivePhase] = useState<"before" | "after">("before");
+  const { t } = useLanguage();
 
   const beforeTasks = mockTasks.filter((t) => t.phase === "before");
   const afterTasks = mockTasks.filter((t) => t.phase === "after");
@@ -75,13 +77,13 @@ const PreparationDashboard = () => {
         <p className="text-sm text-muted-foreground">{task.description}</p>
       </div>
       {task.status === "todo" && (
-        <Button variant="outline" size="sm" className="flex-shrink-0">Commencer</Button>
+        <Button variant="outline" size="sm" className="flex-shrink-0">{t("prep.start")}</Button>
       )}
       {task.status === "in-progress" && (
-        <Button variant="default" size="sm" className="flex-shrink-0">Continuer</Button>
+        <Button variant="default" size="sm" className="flex-shrink-0">{t("prep.continue")}</Button>
       )}
       {task.status === "urgent" && (
-        <Button variant="default" size="sm" className="flex-shrink-0 bg-warning hover:bg-warning/90 text-warning-foreground">Urgent</Button>
+        <Button variant="default" size="sm" className="flex-shrink-0 bg-warning hover:bg-warning/90 text-warning-foreground">{t("prep.urgent.btn")}</Button>
       )}
     </div>
   );
@@ -92,21 +94,21 @@ const PreparationDashboard = () => {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-10 animate-fade-in">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Préparation Aliyah</h1>
-            <p className="text-muted-foreground text-lg">Votre centre de préparation personnalisé. Suivez chaque étape avec clarté.</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{t("prep.title")}</h1>
+            <p className="text-muted-foreground text-lg">{t("prep.subtitle")}</p>
           </div>
 
           {/* Global progress */}
           <div className="premium-card p-6 mb-8 animate-fade-in">
-            <ProgressBar value={globalProgress} label="Progression globale" variant="success" />
+            <ProgressBar value={globalProgress} label={t("prep.global")} variant="success" />
             <div className="grid grid-cols-2 gap-4 mt-6">
               <div className="bg-muted/50 rounded-lg p-4 text-center">
                 <p className="text-sm font-semibold text-foreground">{doneBefore}/{beforeTasks.length}</p>
-                <p className="text-xs text-muted-foreground">Avant l'Aliyah</p>
+                <p className="text-xs text-muted-foreground">{t("prep.before")}</p>
               </div>
               <div className="bg-muted/50 rounded-lg p-4 text-center">
                 <p className="text-sm font-semibold text-foreground">{doneAfter}/{afterTasks.length}</p>
-                <p className="text-xs text-muted-foreground">Après l'Aliyah</p>
+                <p className="text-xs text-muted-foreground">{t("prep.after")}</p>
               </div>
             </div>
           </div>
@@ -124,7 +126,7 @@ const PreparationDashboard = () => {
                     : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
                 )}
               >
-                {phase === "before" ? "Avant l'Aliyah" : "Après l'Aliyah"}
+                {phase === "before" ? t("prep.before") : t("prep.after")}
               </button>
             ))}
           </div>
@@ -135,7 +137,7 @@ const PreparationDashboard = () => {
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <AlertTriangle className="w-4 h-4 text-warning" />
-                  <h3 className="font-semibold text-foreground">Actions urgentes</h3>
+                  <h3 className="font-semibold text-foreground">{t("prep.urgent")}</h3>
                   <Chip variant="warning">{urgentTasks.length}</Chip>
                 </div>
                 <div className="space-y-3">
@@ -148,7 +150,7 @@ const PreparationDashboard = () => {
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <Clock className="w-4 h-4 text-primary" />
-                  <h3 className="font-semibold text-foreground">En cours</h3>
+                  <h3 className="font-semibold text-foreground">{t("prep.inprogress")}</h3>
                   <Chip variant="primary">{inProgressTasks.length}</Chip>
                 </div>
                 <div className="space-y-3">
@@ -161,7 +163,7 @@ const PreparationDashboard = () => {
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <Circle className="w-4 h-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-foreground">À faire</h3>
+                  <h3 className="font-semibold text-foreground">{t("prep.todo")}</h3>
                   <Chip variant="muted">{todoTasks.length}</Chip>
                 </div>
                 <div className="space-y-3">
@@ -174,7 +176,7 @@ const PreparationDashboard = () => {
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <CheckCircle2 className="w-4 h-4 text-success" />
-                  <h3 className="font-semibold text-foreground">Terminé</h3>
+                  <h3 className="font-semibold text-foreground">{t("prep.done")}</h3>
                   <Chip variant="success">{doneTasks.length}</Chip>
                 </div>
                 <div className="space-y-3">
