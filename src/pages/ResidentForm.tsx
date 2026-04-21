@@ -4,12 +4,13 @@ import Stepper from "@/components/Stepper";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-const steps = ["Profil personnel", "Travail & logement", "Situations spéciales", "Récapitulatif"];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ResidentForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const { t } = useLanguage();
+  const steps = [t("rform.step1"), t("rform.step2"), t("rform.step3"), t("rform.step4")];
 
   const next = () => {
     if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
@@ -27,23 +28,23 @@ const ResidentForm = () => {
         <div className="premium-card p-8 md:p-10 animate-fade-in">
           {currentStep === 0 && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Profil personnel</h2>
-              <p className="text-muted-foreground text-sm mb-8">Parlez-nous de vous pour personnaliser votre analyse.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t("rform.step1")}</h2>
+              <p className="text-muted-foreground text-sm mb-8">{t("rform.step1.subtitle")}</p>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Âge</label>
-                  <input type="number" placeholder="ex: 35" className="premium-input" />
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.age")}</label>
+                  <input type="number" placeholder="35" className="premium-input" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Genre</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.gender")}</label>
                   <div className="flex gap-3">
-                    {["Homme", "Femme", "Autre"].map((g) => (
+                    {[t("form.gender.male"), t("form.gender.female"), t("form.gender.other")].map((g) => (
                       <button key={g} className="chip-primary px-4 py-2 hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer rounded-lg">{g}</button>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Situation familiale</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.familyStatus")}</label>
                   <select className="premium-input">
                     <option>Célibataire</option>
                     <option>Marié(e)</option>
@@ -52,7 +53,7 @@ const ResidentForm = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Nombre d'enfants</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.children")}</label>
                   <input type="number" placeholder="0" className="premium-input" />
                 </div>
               </div>
@@ -61,11 +62,11 @@ const ResidentForm = () => {
 
           {currentStep === 1 && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Travail & logement</h2>
-              <p className="text-muted-foreground text-sm mb-8">Votre situation professionnelle et résidentielle.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t("rform.step2")}</h2>
+              <p className="text-muted-foreground text-sm mb-8">{t("rform.step2.subtitle")}</p>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Statut professionnel</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.profession")}</label>
                   <select className="premium-input">
                     <option>Salarié</option>
                     <option>Indépendant</option>
@@ -75,11 +76,11 @@ const ResidentForm = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Revenu mensuel approximatif (NIS)</label>
-                  <input type="number" placeholder="ex: 12000" className="premium-input" />
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.income")}</label>
+                  <input type="number" placeholder="12000" className="premium-input" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Type de logement</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.housing")}</label>
                   <select className="premium-input">
                     <option>Locataire</option>
                     <option>Propriétaire</option>
@@ -92,8 +93,8 @@ const ResidentForm = () => {
 
           {currentStep === 2 && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Situations spéciales</h2>
-              <p className="text-muted-foreground text-sm mb-8">Indiquez si des situations particulières s'appliquent à vous.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t("rform.step3")}</h2>
+              <p className="text-muted-foreground text-sm mb-8">{t("rform.step3.subtitle")}</p>
               <div className="space-y-4">
                 {[
                   "Nouvel immigrant (moins de 10 ans)",
@@ -114,8 +115,8 @@ const ResidentForm = () => {
 
           {currentStep === 3 && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Récapitulatif</h2>
-              <p className="text-muted-foreground text-sm mb-8">Vérifiez vos informations avant de lancer l'analyse.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t("form.summary")}</h2>
+              <p className="text-muted-foreground text-sm mb-8">{t("form.summary.subtitle")}</p>
               <div className="space-y-4">
                 {[
                   { label: "Âge", value: "35 ans" },
@@ -137,10 +138,10 @@ const ResidentForm = () => {
 
           <div className="flex justify-between mt-10 pt-6 border-t border-border/60">
             <Button variant="ghost" onClick={prev} disabled={currentStep === 0}>
-              <ArrowLeft className="w-4 h-4" /> Précédent
+              <ArrowLeft className="w-4 h-4 rtl:rotate-180" /> {t("form.previous")}
             </Button>
             <Button variant="default" onClick={next}>
-              {currentStep === steps.length - 1 ? "Lancer l'analyse" : "Suivant"} <ArrowRight className="w-4 h-4" />
+              {currentStep === steps.length - 1 ? t("form.submit.resident") : t("form.next")} <ArrowRight className="w-4 h-4 rtl:rotate-180" />
             </Button>
           </div>
         </div>
