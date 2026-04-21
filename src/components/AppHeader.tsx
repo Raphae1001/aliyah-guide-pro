@@ -3,20 +3,23 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Menu, X, LogIn, LogOut, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-
-const navItems = [
-  { label: "Accueil", path: "/" },
-  { label: "Commencer", path: "/commencer" },
-  { label: "Préparation", path: "/preparation" },
-  { label: "Mes dossiers", path: "/dossiers" },
-];
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const AppHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { t } = useLanguage();
+
+  const navItems = [
+    { label: t("nav.home"), path: "/" },
+    { label: t("nav.start"), path: "/commencer" },
+    { label: t("nav.preparation"), path: "/preparation" },
+    { label: t("nav.dossiers"), path: "/dossiers" },
+  ];
 
   const handleSignOut = async () => {
     await signOut();
@@ -51,6 +54,7 @@ const AppHeader = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
+          <LanguageSwitcher />
           {user ? (
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-secondary/60">
@@ -61,25 +65,28 @@ const AppHeader = () => {
               </div>
               <Button variant="ghost" size="sm" onClick={handleSignOut}>
                 <LogOut className="w-4 h-4" />
-                Déconnexion
+                {t("nav.signout")}
               </Button>
             </div>
           ) : (
             <Link to="/connexion">
               <Button variant="default" size="sm">
                 <LogIn className="w-4 h-4" />
-                Connexion
+                {t("nav.signin")}
               </Button>
             </Link>
           )}
         </div>
 
-        <button
-          className="md:hidden p-2 rounded-lg hover:bg-muted"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        <div className="md:hidden flex items-center gap-1">
+          <LanguageSwitcher />
+          <button
+            className="p-2 rounded-lg hover:bg-muted"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {mobileOpen && (
@@ -110,10 +117,10 @@ const AppHeader = () => {
                   </div>
                   <button
                     onClick={() => { handleSignOut(); setMobileOpen(false); }}
-                    className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="w-full text-start px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
-                    <LogOut className="w-4 h-4 inline mr-2" />
-                    Déconnexion
+                    <LogOut className="w-4 h-4 inline me-2" />
+                    {t("nav.signout")}
                   </button>
                 </>
               ) : (
@@ -123,7 +130,7 @@ const AppHeader = () => {
                   className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-primary hover:bg-muted transition-colors"
                 >
                   <LogIn className="w-4 h-4" />
-                  Connexion
+                  {t("nav.signin")}
                 </Link>
               )}
             </div>
