@@ -4,12 +4,13 @@ import Stepper from "@/components/Stepper";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-const steps = ["Profil & famille", "Situation professionnelle", "Patrimoine & statut", "Récapitulatif"];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AliyahForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const { t } = useLanguage();
+  const steps = [t("aform.step1"), t("aform.step2"), t("aform.step3"), t("aform.step4")];
 
   const next = () => {
     if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
@@ -27,16 +28,16 @@ const AliyahForm = () => {
         <div className="premium-card p-8 md:p-10 animate-fade-in">
           {currentStep === 0 && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Profil & famille</h2>
-              <p className="text-muted-foreground text-sm mb-8">Informations de base sur vous et votre famille.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t("aform.step1")}</h2>
+              <p className="text-muted-foreground text-sm mb-8">{t("aform.step1.subtitle")}</p>
               <div className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Âge</label>
-                    <input type="number" placeholder="ex: 32" className="premium-input" />
+                    <label className="block text-sm font-medium text-foreground mb-2">{t("form.age")}</label>
+                    <input type="number" placeholder="32" className="premium-input" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Pays d'origine</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">{t("aform.country")}</label>
                     <select className="premium-input">
                       <option>France</option>
                       <option>Belgique</option>
@@ -47,7 +48,7 @@ const AliyahForm = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Année d'Aliyah prévue</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("aform.year")}</label>
                   <select className="premium-input">
                     <option>2026</option>
                     <option>2027</option>
@@ -56,7 +57,7 @@ const AliyahForm = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Niveau d'hébreu</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("aform.hebrew")}</label>
                   <div className="flex flex-wrap gap-2">
                     {["Aucun", "Débutant", "Intermédiaire", "Avancé", "Courant"].map((l) => (
                       <button key={l} className="chip-primary px-4 py-2 hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer rounded-lg text-sm">{l}</button>
@@ -64,7 +65,7 @@ const AliyahForm = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Situation familiale</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.familyStatus")}</label>
                   <select className="premium-input">
                     <option>Célibataire</option>
                     <option>Marié(e)</option>
@@ -73,7 +74,7 @@ const AliyahForm = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Nombre d'enfants</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("form.children")}</label>
                   <input type="number" placeholder="0" className="premium-input" />
                 </div>
               </div>
@@ -82,15 +83,15 @@ const AliyahForm = () => {
 
           {currentStep === 1 && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Situation professionnelle</h2>
-              <p className="text-muted-foreground text-sm mb-8">Votre parcours et vos projets professionnels.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t("aform.step2")}</h2>
+              <p className="text-muted-foreground text-sm mb-8">{t("aform.step2.subtitle")}</p>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Profession actuelle</label>
-                  <input type="text" placeholder="ex: Ingénieur logiciel" className="premium-input" />
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("aform.profession")}</label>
+                  <input type="text" placeholder="Ingénieur" className="premium-input" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Secteur d'activité</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("aform.sector")}</label>
                   <select className="premium-input">
                     <option>Tech / IT</option>
                     <option>Santé</option>
@@ -102,7 +103,7 @@ const AliyahForm = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Ville cible en Israël</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{t("aform.city")}</label>
                   <select className="premium-input">
                     <option>Tel Aviv</option>
                     <option>Jérusalem</option>
@@ -119,8 +120,8 @@ const AliyahForm = () => {
 
           {currentStep === 2 && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Patrimoine & statut international</h2>
-              <p className="text-muted-foreground text-sm mb-8">Ces informations nous aident à anticiper les aspects fiscaux et patrimoniaux.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t("aform.step3")}</h2>
+              <p className="text-muted-foreground text-sm mb-8">{t("aform.step3.subtitle")}</p>
               <div className="space-y-6">
                 {[
                   "Biens immobiliers à l'étranger",
@@ -140,8 +141,8 @@ const AliyahForm = () => {
 
           {currentStep === 3 && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Récapitulatif</h2>
-              <p className="text-muted-foreground text-sm mb-8">Vérifiez vos informations avant de générer votre guide personnalisé.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t("form.summary")}</h2>
+              <p className="text-muted-foreground text-sm mb-8">{t("aform.summary.subtitle")}</p>
               <div className="space-y-4">
                 {[
                   { label: "Âge", value: "32 ans" },
@@ -164,10 +165,10 @@ const AliyahForm = () => {
 
           <div className="flex justify-between mt-10 pt-6 border-t border-border/60">
             <Button variant="ghost" onClick={prev} disabled={currentStep === 0}>
-              <ArrowLeft className="w-4 h-4" /> Précédent
+              <ArrowLeft className="w-4 h-4 rtl:rotate-180" /> {t("form.previous")}
             </Button>
             <Button variant="default" onClick={next}>
-              {currentStep === steps.length - 1 ? "Générer mon guide" : "Suivant"} <ArrowRight className="w-4 h-4" />
+              {currentStep === steps.length - 1 ? t("form.submit.aliyah") : t("form.next")} <ArrowRight className="w-4 h-4 rtl:rotate-180" />
             </Button>
           </div>
         </div>
