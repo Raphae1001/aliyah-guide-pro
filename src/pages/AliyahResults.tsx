@@ -4,6 +4,7 @@ import Chip from "@/components/Chip";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Download, ArrowRight, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const sections = [
   {
@@ -62,6 +63,7 @@ const sections = [
 
 const AliyahResults = () => {
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set([0]));
+  const { t } = useLanguage();
 
   const toggleSection = (i: number) => {
     const next = new Set(expandedSections);
@@ -74,9 +76,9 @@ const AliyahResults = () => {
       <div className="section-container py-10 md:py-16">
         {/* Header */}
         <div className="max-w-3xl mb-10 animate-fade-in">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Votre guide Aliyah personnalisé</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">{t("results.aliyah.title")}</h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Voici votre guide complet basé sur votre profil : droits, avantages, démarches et recommandations pour préparer votre Aliyah.
+            {t("results.aliyah.subtitle")}
           </p>
         </div>
 
@@ -145,16 +147,16 @@ const AliyahResults = () => {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4 mt-10">
           <Button variant="default" size="lg">
-            <Download className="w-4 h-4" /> Télécharger le guide
+            <Download className="w-4 h-4" /> {t("results.download.guide")}
           </Button>
           <Link to="/preparation">
             <Button variant="outline" size="lg">
-              Accéder à la préparation <ArrowRight className="w-4 h-4" />
+              {t("results.preparation")} <ArrowRight className="w-4 h-4 rtl:rotate-180" />
             </Button>
           </Link>
           <Link to="/dossiers">
             <Button variant="ghost" size="lg">
-              Sauvegarder dans mes dossiers
+              {t("results.save")}
             </Button>
           </Link>
         </div>
